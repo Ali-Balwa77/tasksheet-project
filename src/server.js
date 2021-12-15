@@ -1,0 +1,20 @@
+require('dotenv').config()
+const express = require('express')
+const app = express()
+require('./db/conn')
+const path = require('path')
+const template_path = path.join(__dirname, "../template/views")
+const static_path = path.join(__dirname,'../public')
+const userrouter = require('./router/user.route')
+const taskrouter = require('./router/task.route')
+
+app.set("view engine", 'ejs')
+app.set("views", template_path)
+app.use(express.static(static_path))
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(userrouter)
+app.use(taskrouter)
+                               
+const port = process.env.PORT || 8000
+app.listen(port,()=>console.log(`Listening on port ${port}`))
